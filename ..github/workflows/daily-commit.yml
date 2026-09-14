@@ -1,0 +1,26 @@
+name: Daily Commit
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # 6:00 UTC daily — adjust as needed
+  workflow_dispatch:
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Update log file
+        run: |
+          echo "Contribution on $(date -u)" >> contributions.log
+
+      - name: Commit and push
+        run: |
+          git config user.name "Pratishtha-Yadav"
+          git config user.email "pratishthayadav80@gmail.com"
+          git add contributions.log
+          git commit -m "Daily auto-contribution: $(date -u +%F)"
+          git push
